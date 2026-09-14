@@ -13,7 +13,7 @@ from models.video import (
 )
 from utils.background import dispatch_background
 
-router = APIRouter(prefix="/api/jobs", tags=["Jobs"])
+router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
 @router.post("")
 async def create_new_job(req: CreateJobRequest, user = Depends(get_current_user)):

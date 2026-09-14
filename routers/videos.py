@@ -7,7 +7,7 @@ from routers.auth import get_current_user
 from models.video import create_video, find_video_by_id
 from config.settings import settings
 
-router = APIRouter(prefix="/api/videos", tags=["Videos"])
+router = APIRouter(prefix="/videos", tags=["Videos"])
 
 @router.post("/upload")
 async def upload_video(file: UploadFile = File(...), user = Depends(get_current_user)):

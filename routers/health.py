@@ -3,9 +3,10 @@
 from fastapi import APIRouter
 from config.database import check_connection
 
-router = APIRouter(prefix="/api", tags=["Health"])
+router = APIRouter(tags=["Health"])
 
 @router.get("/health")
+@router.get("/api/health")
 async def health_check():
     db_ok = await check_connection()
     return {

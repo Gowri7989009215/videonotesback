@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from routers.auth import get_current_user
 from models.video import get_user_stats
 
-router = APIRouter(prefix="/api/users", tags=["Users"])
+router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.get("/stats")
 async def user_stats(user = Depends(get_current_user)):

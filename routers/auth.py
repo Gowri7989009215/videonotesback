@@ -19,7 +19,7 @@ from services.auth_service import (
 from utils.security import decode_access_token
 from models.user import find_user_by_id
 
-router = APIRouter(prefix="/api/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
 security = HTTPBearer()
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(security)):

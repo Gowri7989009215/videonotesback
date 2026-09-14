@@ -5,7 +5,7 @@ from fastapi import APIRouter, HTTPException, status
 from fastapi.responses import FileResponse
 from models.video import find_output_by_job_id
 
-router = APIRouter(prefix="/api/files", tags=["Files"])
+router = APIRouter(prefix="/files", tags=["Files"])
 
 @router.get("/pdf/{job_id}")
 async def get_pdf(job_id: str):

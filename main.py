@@ -111,6 +111,15 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"message": str(exc)}
     )
 
+# Primary API routes (prefixed with /api)
+app.include_router(auth_router, prefix="/api")
+app.include_router(oauth_router, prefix="/api")
+app.include_router(users_router, prefix="/api")
+app.include_router(videos_router, prefix="/api")
+app.include_router(jobs_router, prefix="/api")
+app.include_router(files_router, prefix="/api")
+
+# Fallback API routes (without /api prefix, in case VITE_API_BASE_URL is set without /api)
 app.include_router(auth_router)
 app.include_router(oauth_router)
 app.include_router(users_router)

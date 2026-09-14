@@ -8,7 +8,7 @@ from models.user import create_oauth_user
 from utils.security import create_access_token
 from config.settings import settings
 
-router = APIRouter(prefix="/api/auth", tags=["Auth"])
+router = APIRouter(prefix="/auth", tags=["Auth"])
 
 @router.post("/google")
 async def google_login(req: OAuthLoginRequest):
