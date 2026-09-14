@@ -22,13 +22,24 @@ async def generate_ai_analysis(transcript_text: str) -> Dict[str, Any]:
     """
 
     if settings.openai_api_key:
-        return await _generate_openai(prompt)
-    elif settings.gemini_api_key:
-        return await _generate_gemini(prompt)
-    elif settings.anthropic_api_key:
-        return await _generate_anthropic(prompt)
-    else:
-        return _generate_fallback(transcript_text)
+        try:
+            return await _generate_openai(prompt)
+        except Exception as e:
+            print(f"[AI Service Error] OpenAI failed ({e}), trying next provider or fallback...")
+
+    if settings.gemini_api_key:
+        try:
+            return await _generate_gemini(prompt)
+        except Exception as e:
+            print(f"[AI Service Error] Gemini failed ({e}), trying next provider or fallback...")
+
+    if settings.anthropic_api_key:
+        try:
+            return await _generate_anthropic(prompt)
+        except Exception as e:
+            print(f"[AI Service Error] Anthropic failed ({e}), using fallback...")
+
+    return _generate_fallback(transcript_text)
 
 async def _generate_openai(prompt: str) -> Dict[str, Any]:
     headers = {
