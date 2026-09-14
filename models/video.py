@@ -88,14 +88,24 @@ async def update_job_status(job_id: str, status: str, error_message: Optional[st
         await execute(sql, job_id, status, error_message, progress)
 
 async def create_output(job_id: str, pdf_path: str, page_count: int) -> Dict[str, Any]:
-    out_id = str(uuid.uuid4())
-    sql = """
-    INSERT INTO outputs (id, job_id, pdf_path, frame_count, created_at)
-    VALUES ($1, $2::uuid, $3, $4, NOW())
-    ON CONFLICT (job_id) DO UPDATE SET pdf_path = $3, frame_count = $4, created_at = NOW()
-    RETURNING id, job_id, pdf_path, frame_count as page_count, created_at
-    """
-    row = await query_one(sql, out_id, job_id, pdf_path, page_count)
+    existing = await query_one("SELECT id FROM outputs WHERE job_id = $1::uuid", job_id)
+    if existing:
+        sql = """
+        UPDATE outputs
+        SET pdf_path = $2, frame_count = $3, created_at = NOW()
+        WHERE job_id = $1::uuid
+        RETURNING id, job_id, pdf_path, frame_count as page_count, created_at
+        """
+        row = await query_one(sql, job_id, pdf_path, page_count)
+    else:
+        out_id = str(uuid.uuid4())
+        sql = """
+        INSERT INTO outputs (id, job_id, pdf_path, frame_count, created_at)
+        VALUES ($1, $2::uuid, $3, $4, NOW())
+        RETURNING id, job_id, pdf_path, frame_count as page_count, created_at
+        """
+        row = await query_one(sql, out_id, job_id, pdf_path, pdf_path, page_count) if False else await query_one(sql, out_id, job_id, pdf_path, page_count)
+
     return {
         "id": str(row["id"]),
         "jobId": str(row["job_id"]),
