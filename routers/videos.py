@@ -28,9 +28,9 @@ async def upload_video(
     os.makedirs(upload_dir, exist_ok=True)
     file_path = os.path.join(upload_dir, filename)
 
-    contents = await file.read()
-    with open(file_path, "wb") as f:
-        f.write(contents)
+    import shutil
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
     video = await create_video(user_id=user_id, filename=filename)
     job = await create_job(user_id=user_id, video_id=video["id"], mode=mode, interval_seconds=interval)
