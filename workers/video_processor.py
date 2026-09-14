@@ -98,3 +98,6 @@ async def process_video_job(payload: Dict[str, Any]):
     except Exception as e:
         print(f"[Worker Error] Job {job_id} failed: {e}")
         await update_job_status(job_id, "failed", error_message=str(e))
+
+from utils.background import register_handler
+register_handler("process_video", process_video_job)

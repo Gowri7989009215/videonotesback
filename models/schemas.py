@@ -33,6 +33,22 @@ class CreateJobRequest(BaseModel):
     mode: str = "frames+transcript"
     interval_seconds: int = 3
 
+class CreateYouTubeJobRequest(BaseModel):
+    youtube_url: Optional[str] = None
+    youtubeUrl: Optional[str] = None
+    mode: str = "frames+transcript"
+    interval_seconds: int = 3
+    intervalSeconds: Optional[int] = None
+
+    def get_url(self) -> str:
+        url = self.youtube_url or self.youtubeUrl
+        if not url:
+            raise ValueError("YouTube URL is required")
+        return url
+
+    def get_interval(self) -> int:
+        return self.intervalSeconds if self.intervalSeconds is not None else self.interval_seconds
+
 class UpdateUserRequest(BaseModel):
     name: Optional[str] = None
     avatar_url: Optional[str] = None
