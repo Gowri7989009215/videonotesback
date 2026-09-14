@@ -38,14 +38,21 @@ class Settings(BaseSettings):
     ytdlp_proxy: str = ""
     ytdlp_cookies_path: str = ""
 
-    allowed_origins: str = "http://localhost:5173,http://localhost:3000,https://videonotesback.onrender.com,https://videonotesfront.vercel.app"
+    allowed_origins: str = "http://localhost:5173,http://localhost:3000,https://videonotesback.onrender.com,http://localhost:4173,https://videonotesfront.vercel.app"
+
     @property
     def is_prod(self) -> bool:
         return self.node_env == "production"
 
     @property
     def origins_list(self) -> List[str]:
-        return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
+        raw = [o.strip().rstrip("/") for o in self.allowed_origins.split(",") if o.strip()]
+        res = []
+        for o in raw:
+            if o:
+                res.append(o)
+                res.append(o + "/")
+        return list(set(res))
 
     @property
     def asyncpg_url(self) -> str:

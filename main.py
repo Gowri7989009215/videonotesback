@@ -97,6 +97,7 @@ Get a token by calling `POST /api/auth/login`.
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins_list if settings.origins_list else ["*"],
+    allow_origin_regex=r"https://.*\.vercel\.app|http://localhost:\d+",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
