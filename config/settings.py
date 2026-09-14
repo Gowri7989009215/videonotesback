@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     ytdlp_proxy: str = ""
     ytdlp_cookies_path: str = ""
 
-    allowed_origins: str = "http://localhost:5173,http://localhost:3000,https://videonotesfront.vercel.app"
+    allowed_origins: str = "http://localhost:5173,http://localhost:3000,https://videonotesback.onrender.com,https://videonotesfront.vercel.app"
     @property
     def is_prod(self) -> bool:
         return self.node_env == "production"
